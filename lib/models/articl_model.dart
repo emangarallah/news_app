@@ -1,8 +1,16 @@
-class ArticlModel {
- final String? image;
+class ArticleModel {
+  final String? image;
   final String title;
-  final String? subtitle;
+  final String? subTitle;
 
-  ArticlModel({ required this.image, required this.title, required this.subtitle, });
+  ArticleModel(
+      {required this.image, required this.title, required this.subTitle});
 
+  factory ArticleModel.fromJson(json) {
+    return ArticleModel(
+      image: json['urlToImage'],
+      title: json['title'],
+      subTitle: json['description'],
+    );
+  }
 }

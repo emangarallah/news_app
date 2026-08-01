@@ -1,51 +1,49 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/models/articl_model.dart';
-import 'package:news_app/service/news_service.dart';
 import 'package:news_app/views/widgets/newlistview.dart';
 
-class NewesListViewBuilder extends StatefulWidget {
 
-  const NewesListViewBuilder({super.key, required this.category});
+import '../../models/articl_model.dart';
+import '../../service/news_service.dart';
+
+
+class NewsListViewBuilder extends StatefulWidget {
+  const NewsListViewBuilder({super.key, required this.category});
+
   final String category;
-
   @override
-  State<NewesListViewBuilder> createState() => _NewesListViewBuilderState();
+  State<NewsListViewBuilder> createState() => _NewsListViewBuilderState();
 }
 
-class _NewesListViewBuilderState extends State<NewesListViewBuilder> {
-  //late final Future<dynamic> _newsFuture;
+class _NewsListViewBuilderState extends State<NewsListViewBuilder> {
   var future;
-
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    // Fetch the news once when the widget enters the tree
-    future = NewsService(Dio()).getTopHeadlines
-      (category:widget.category);
+    future = NewsService(Dio()).getTopHeadlines(category: widget.category);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ArticlModel>>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Newlistview(articles: snapshot.data!);
-        } else if (snapshot.hasError) {
-          return const SliverToBoxAdapter(
-            child: Center(
-              child: Text('Oops, there was an error loading news.'),
-            ),
-          );
-        } else {
-          return const SliverToBoxAdapter(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
+    return FutureBuilder<List< ArticleModel>>(
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return NewsListView(
+              articles: snapshot.data!,
+            );
+          } else if (snapshot.hasError) {
+            return const SliverToBoxAdapter(
+              child: Text('oops  was an error, try later'),
+            );
+          } else {
+            return const SliverToBoxAdapter(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        });
   }
 }
